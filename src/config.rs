@@ -14,4 +14,4 @@ pub struct Config {
     pub network_off_seconds: f32,
 }
 
-pub static CONFIG: LazyLock<Config> = LazyLock::new(|| Config::parse());
+pub static CONFIG: LazyLock<Config> = LazyLock::new(Config::parse);
