@@ -1,0 +1,33 @@
+name: Release Build
+
+on:
+  release:
+    types: [ released ]
+
+# TODO: Replace this with permissions scoped around contents & releases, at a brief glance
+#  it doesn't look like there are specific perms for editing releases :(
+permissions: write-all
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt,clippy
+
+      - name: Build project (release)
+        run: cargo build --release
+
+      - name: Upload binary
+        run: |
+          export NEW_BINARY_NAME=auto-restart-wifi-${{ github.ref_name }}-linux-amd64
+
+          mv './target/release/auto-restart-wifi' "./$NEW_BINARY_NAME"
+
+          gh release upload '${{ github.ref_name }}' "./$NEW_BINARY_NAME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
