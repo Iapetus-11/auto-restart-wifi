@@ -1,8 +1,12 @@
 use std::{thread::sleep, time::Duration};
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 
-use crate::{config::CONFIG, network::is_network_connected, usb::toggle_wifi_adapter};
+use crate::{
+    config::CONFIG,
+    network::{NetworkTestError, is_network_connected},
+    usb::toggle_wifi_adapter,
+};
 
 mod config;
 mod network;
@@ -16,8 +20,14 @@ fn main() -> Result<()> {
 
         match is_network_connected() {
             Ok(()) => continue,
-            Err(error) => {
-                eprintln!("Network connection failed: {error:#?}");
+            Err(NetworkTestError::InvalidTestAddress(error)) => {
+                bail!(
+                    "Test address {:?} is not valid: {error:?}",
+                    CONFIG.test_address
+                );
+            }
+            Err(NetworkTestError::Other(error)) => {
+                eprintln!("Network connection failed: {error:#?}\n");
             }
         }
 
