@@ -1,0 +1,9 @@
+[package]
+name = "auto-restart-wifi"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.54", default-features = false, features = ["std", "derive", "help", "suggestions"] }
+regex = { version = "1.12.2", default-features = false }
