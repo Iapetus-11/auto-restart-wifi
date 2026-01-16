@@ -24,10 +24,26 @@ jobs:
 
       - name: Upload binary
         run: |
-          export NEW_BINARY_NAME=auto-restart-wifi-${{ github.ref_name }}-linux-amd64
+          BINARY_NAME=auto-restart-wifi-${{ github.ref_name }}-linux-amd64
+          echo "BINARY_NAME=$BINARY_NAME" >> $GITHUB_ENV
 
-          mv './target/release/auto-restart-wifi' "./$NEW_BINARY_NAME"
+          mv './target/release/auto-restart-wifi' "./$BINARY_NAME"
 
-          gh release upload '${{ github.ref_name }}' "./$NEW_BINARY_NAME"
+          gh release upload '${{ github.ref_name }}' "./$BINARY_NAME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate & upload install script
+        run: |
+          node -e "\
+            const fs = require('fs');
+            const newInstallScript = fs.readFileSync('install.sh', { encoding: 'utf8' })
+              .replaceAll('{{GH_REPOSITORY}}', '${{ github.repository }}')
+              .replaceAll('{{GH_RELEASE_TAG}}', '${{ github.ref_name }}')
+              .replaceAll('{{GH_RELEASE_BINARY}}', process.env.BINARY_NAME);
+            fs.writeFileSync('install.sh', newInstallScript);
+          "
+
+          gh release upload '${{ github.ref_name }}' './install.sh'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
