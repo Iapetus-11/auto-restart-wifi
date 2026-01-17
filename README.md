@@ -6,8 +6,9 @@
 ## Installation Instructions
 Use the install script to download the binary and setup a systemd service automatically:
 ```
-curl https://github.com/Iapetus-11/auto-restart-wifi/releases/latest/download/install.sh | bash
+curl -sSL https://github.com/Iapetus-11/auto-restart-wifi/releases/latest/download/install.sh | bash
 ```
+If you encounter a permission error when installing the binary, you may replace `| bash` with `| sudo bash`.
 
 You can edit the flags in (`/etc/systemd/user/auto-restart-wifi.service`, see `ExecStart`) to your liking. Run `auto-restart-wifi --help` to see available flags first.
 
