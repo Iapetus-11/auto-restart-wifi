@@ -5,7 +5,7 @@ use anyhow::{Context, Result, bail};
 use crate::{
     config::CONFIG,
     network::{NetworkTestError, is_network_connected},
-    usb::toggle_wifi_adapter,
+    usb::{find_adapter_bus_and_device, toggle_wifi_adapter},
 };
 
 mod config;
@@ -13,6 +13,8 @@ mod network;
 mod usb;
 
 fn main() -> Result<()> {
+    find_adapter_bus_and_device()?; // Just make sure target device actually exists
+
     let test_interval_duration = Duration::from_secs_f32(CONFIG.test_interval_seconds.abs());
 
     loop {

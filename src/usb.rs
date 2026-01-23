@@ -13,7 +13,7 @@ use crate::config::CONFIG;
 static LSUSB_LINE_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^Bus\s(?<bus>\d+)\sDevice\s(?<device>\d+):").unwrap());
 
-fn find_adapter_bus_and_device() -> Result<(u16, u16)> {
+pub fn find_adapter_bus_and_device() -> Result<(u16, u16)> {
     let lsusb_output = Command::new("lsusb").output()?;
     let lsusb_stdout = String::from_utf8_lossy(&lsusb_output.stdout);
 
