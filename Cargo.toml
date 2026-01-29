@@ -1,6 +1,5 @@
 [package]
 name = "auto-restart-wifi"
-version = "0.1.2"
 edition = "2024"
 
 [dependencies]
