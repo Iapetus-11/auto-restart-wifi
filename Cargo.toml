@@ -3,6 +3,11 @@ name = "auto-restart-wifi"
 edition = "2024"
 
 [dependencies]
-anyhow = "1.0.100"
-clap = { version = "4.5.54", default-features = false, features = ["std", "derive", "help", "suggestions"] }
-regex = { version = "1.12.2", default-features = false, features = ["unicode-perl"] }
+anyhow = "1.0.102"
+clap = { version = "4.6.1", default-features = false, features = ["std", "derive", "help", "suggestions"] }
+regex = { version = "1.12.3", default-features = false, features = ["unicode-perl"] }
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
+panic = "abort"
