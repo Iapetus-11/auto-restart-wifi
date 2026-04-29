@@ -9,7 +9,7 @@ pub enum NetworkTestError {
     Other(anyhow::Error),
 }
 
-/// Returns an Err() if network is down
+/// Returns an `Err()` if network is down
 pub fn is_network_connected() -> Result<(), NetworkTestError> {
     match TcpStream::connect(&CONFIG.test_address) {
         Ok(_) => Ok(()),
