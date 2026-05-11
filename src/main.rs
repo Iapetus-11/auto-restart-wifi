@@ -33,6 +33,9 @@ fn main() -> Result<()> {
             }
         }
 
-        toggle_wifi_adapter().context("Toggling wifi adapter off and back on")?;
+        let toggle_result = toggle_wifi_adapter().context("Toggling wifi adapter off and back on");
+        if let Err(error) = toggle_result {
+            eprintln!("Failed to toggle wifi adapter: {error:#?}\n");
+        }
     }
 }
